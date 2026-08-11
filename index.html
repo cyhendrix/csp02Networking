@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 2 Networking Simulation</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f8f7fb;color:#23232a;margin:0}
+main{max-width:900px;margin:auto;padding:24px}
+header{background:#492770;color:white;padding:20px;border-radius:16px}
+section{background:white;border:1px solid #e6e1ee;border-radius:16px;padding:20px;margin-top:18px}
+h1,h2{margin-top:0} h2{color:#492770}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.score{background:white;color:#23232a;padding:12px;border-radius:12px;text-align:center}
+label{display:block;margin-top:12px;font-weight:600}
+select{width:100%;padding:10px;border:1px solid #bbb;border-radius:10px;font-size:16px}
+button{margin-top:12px;background:#492770;color:white;border:0;border-radius:10px;padding:10px 16px;font-size:16px;cursor:pointer}
+.feedback{margin-top:10px;font-weight:600}
+.callout{background:#fff7dd;border:2px solid #f2b526;border-radius:16px;padding:18px;margin-top:18px}
+svg{width:100%;height:auto}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>Chapter 2 Networking Simulation</h1>
+<p>Complete all three challenges. Your score updates as you work.</p>
+<div class="grid">
+<div class="score">Hardware<br><strong id="score1">0/4</strong></div>
+<div class="score">Routing<br><strong id="score2">0/3</strong></div>
+<div class="score">Protocols<br><strong id="score3">0/4</strong></div>
+</div>
+</header>
+
+<section>
+<h2>Challenge 1: Build the Network</h2>
+<label>Connects several devices and sends traffic only toward the intended device</label>
+<select id="h1"><option value="">Choose...</option><option>Hub</option><option>Switch</option><option>Router</option><option>Modem</option></select>
+<label>Directs traffic between different networks</label>
+<select id="h2"><option value="">Choose...</option><option>Hub</option><option>Switch</option><option>Router</option><option>Modem</option></select>
+<label>Connects the local network to the Internet service</label>
+<select id="h3"><option value="">Choose...</option><option>Hub</option><option>Switch</option><option>Router</option><option>Modem</option></select>
+<label>Repeats incoming data to all connected ports</label>
+<select id="h4"><option value="">Choose...</option><option>Hub</option><option>Switch</option><option>Router</option><option>Modem</option></select>
+<button id="checkHardware">Check hardware</button>
+<div id="hardwareFeedback" class="feedback"></div>
+</section>
+
+<section>
+<h2>Challenge 2: Route the Packet</h2>
+<p>A packet must travel from Client A to Server F. Choose a route that still works after the selected failure.</p>
+<svg viewBox="0 0 700 270" role="img" aria-label="Network routing diagram">
+<g fill="none" stroke="#aaa" stroke-width="4">
+<path d="M80 135 L220 70 L380 70 L590 135"/>
+<path d="M80 135 L220 200 L380 200 L590 135"/>
+<path d="M220 70 L220 200"/><path d="M380 70 L380 200"/>
+</g>
+<g font-size="18" text-anchor="middle" dominant-baseline="middle">
+<g><circle cx="80" cy="135" r="28" fill="#492770"/><text x="80" y="135" fill="white">A</text></g>
+<g><circle cx="220" cy="70" r="28" fill="white" stroke="#aaa"/><text x="220" y="70">B</text></g>
+<g><circle cx="220" cy="200" r="28" fill="white" stroke="#aaa"/><text x="220" y="200">C</text></g>
+<g><circle cx="380" cy="70" r="28" fill="white" stroke="#aaa"/><text x="380" y="70">D</text></g>
+<g><circle cx="380" cy="200" r="28" fill="white" stroke="#aaa"/><text x="380" y="200">E</text></g>
+<g><circle cx="590" cy="135" r="28" fill="#492770"/><text x="590" y="135" fill="white">F</text></g>
+</g></svg>
+<label>Scenario</label>
+<select id="failure"><option value="none">No failure</option><option value="B">Node B fails</option><option value="D">Node D fails</option></select>
+<label>Choose a route</label>
+<select id="route"><option value="">Choose...</option><option value="ABDF">A → B → D → F</option><option value="ACEF">A → C → E → F</option><option value="ABCEF">A → B → C → E → F</option></select>
+<button id="checkRoute">Send packet</button>
+<div id="routeFeedback" class="feedback"></div>
+</section>
+
+<section>
+<h2>Challenge 3: Pick the Protocol</h2>
+<label>Load a web page</label>
+<select id="p1"><option value="">Choose...</option><option>HTTP</option><option>FTP</option><option>SMTP</option><option>IMAP</option></select>
+<label>Transfer a file</label>
+<select id="p2"><option value="">Choose...</option><option>HTTP</option><option>FTP</option><option>SMTP</option><option>IMAP</option></select>
+<label>Send email</label>
+<select id="p3"><option value="">Choose...</option><option>HTTP</option><option>FTP</option><option>SMTP</option><option>IMAP</option></select>
+<label>Receive/sync email</label>
+<select id="p4"><option value="">Choose...</option><option>HTTP</option><option>FTP</option><option>SMTP</option><option>IMAP</option></select>
+<button id="checkProtocols">Check protocols</button>
+<div id="protocolFeedback" class="feedback"></div>
+</section>
+
+<div class="callout">
+<strong>Finish line</strong>
+<div id="totalScore" style="margin-top:8px;font-size:20px">Total score: 0/11</div>
+</div>
+</main>
+<script>
+const scores={h:0,r:0,p:0};
+function update(){
+score1.textContent=scores.h+'/4';
+score2.textContent=scores.r+'/3';
+score3.textContent=scores.p+'/4';
+totalScore.textContent='Total score: '+(scores.h+scores.r+scores.p)+'/11';
+}
+checkHardware.addEventListener('click',()=>{
+const ans=['Switch','Router','Modem','Hub']; let n=0;
+ans.forEach((a,i)=>{if(document.getElementById('h'+(i+1)).value===a)n++;});
+scores.h=n;
+hardwareFeedback.textContent=n===4?'Great job — all four are correct.':n+' of 4 correct.';
+update();
+});
+checkRoute.addEventListener('click',()=>{
+const f=failure.value,r=route.value; let ok=false;
+if(f==='none') ok=['ABDF','ACEF','ABCEF'].includes(r);
+if(f==='B') ok=r==='ACEF';
+if(f==='D') ok=['ACEF','ABCEF'].includes(r);
+scores.r=ok?3:0;
+routeFeedback.textContent=ok?'Packet delivered!':'That route is blocked. Try another path.';
+update();
+});
+checkProtocols.addEventListener('click',()=>{
+const ans=['HTTP','FTP','SMTP','IMAP']; let n=0;
+ans.forEach((a,i)=>{if(document.getElementById('p'+(i+1)).value===a)n++;});
+scores.p=n;
+protocolFeedback.textContent=n===4?'Excellent — all protocol matches are correct.':n+' of 4 correct.';
+update();
+});
+update();
+</script>
+</body></html>
