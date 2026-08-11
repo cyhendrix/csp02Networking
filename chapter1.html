@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 1 Computing Concepts Simulation</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f8f7fb;color:#23232a;margin:0}main{max-width:900px;margin:auto;padding:24px}header{background:#492770;color:#fff;padding:22px;border-radius:16px}section{background:#fff;border:1px solid #e6e1ee;border-radius:16px;padding:20px;margin-top:18px}h1,h2{margin-top:0}h2{color:#492770}.scores{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}.score{background:#fff;color:#23232a;border-radius:12px;padding:12px;text-align:center}label{display:block;margin-top:12px;font-weight:600}select{width:100%;padding:10px;border:1px solid #bbb;border-radius:10px;font-size:16px;background:#fff}button{margin-top:12px;background:#492770;color:#fff;border:0;border-radius:10px;padding:10px 16px;font-size:16px;cursor:pointer}.feedback{margin-top:10px;font-weight:600}.timeline{display:grid;gap:10px}.callout{background:#fff7dd;border:2px solid #f2b526;border-radius:16px;padding:18px;margin-top:18px}@media(max-width:640px){.scores{grid-template-columns:1fr}}
+</style>
+</head><body><main>
+<header><h1>Chapter 1: Computing Concepts Simulation</h1><p>Complete the three challenges to review computer history, hardware, and software.</p><div class="scores"><div class="score">History<br><strong id="s1">0/4</strong></div><div class="score">Hardware<br><strong id="s2">0/5</strong></div><div class="score">Software<br><strong id="s3">0/4</strong></div></div></header>
+<section><h2>Challenge 1: Computer Evolution</h2><p>Choose the correct development for each description.</p><div class="timeline">
+<label>Early electronic digital computer that could be programmed and reprogrammed<select id="t1"><option value="">Choose...</option><option>ENIAC</option><option>Transistor</option><option>Microprocessor</option><option>Quantum computer</option></select></label>
+<label>Stored-program concept: instructions can be kept in memory<select id="t2"><option value="">Choose...</option><option>Von Neumann Architecture</option><option>Moore's Law</option><option>Vacuum tube</option><option>SSD</option></select></label>
+<label>Smaller, cooler, and more reliable replacement for vacuum tubes<select id="t3"><option value="">Choose...</option><option>Transistor</option><option>ENIAC</option><option>ROM</option><option>Quantum bit</option></select></label>
+<label>Experimental computers use these instead of traditional bits<select id="t4"><option value="">Choose...</option><option>Qbits</option><option>Ethernet</option><option>RAM</option><option>Drivers</option></select></label>
+</div><button id="check1">Check history</button><div id="f1" class="feedback"></div></section>
+<section><h2>Challenge 2: Inside the Computer</h2><p>Match each hardware component to its main job.</p>
+<label>Executes instructions and processes data<select id="h1"><option value="">Choose...</option><option>CPU</option><option>RAM</option><option>ROM</option><option>Motherboard</option><option>SSD</option></select></label>
+<label>Temporary working memory used while the computer is on<select id="h2"><option value="">Choose...</option><option>CPU</option><option>RAM</option><option>ROM</option><option>Motherboard</option><option>SSD</option></select></label>
+<label>Stores information even when the power is off and commonly holds startup instructions<select id="h3"><option value="">Choose...</option><option>CPU</option><option>RAM</option><option>ROM</option><option>Motherboard</option><option>SSD</option></select></label>
+<label>Central board that connects and supports major components<select id="h4"><option value="">Choose...</option><option>CPU</option><option>RAM</option><option>ROM</option><option>Motherboard</option><option>SSD</option></select></label>
+<label>Stores files using circuits and has no moving parts<select id="h5"><option value="">Choose...</option><option>CPU</option><option>RAM</option><option>ROM</option><option>Motherboard</option><option>SSD</option></select></label>
+<button id="check2">Check hardware</button><div id="f2" class="feedback"></div></section>
+<section><h2>Challenge 3: Make the Printer Work</h2><p>Put the software/hardware pieces in the correct order for printing a report.</p>
+<label>Step 1<select id="p1"><option value="">Choose...</option><option>Word processor</option><option>Operating system</option><option>Printer driver</option><option>Printer</option></select></label>
+<label>Step 2<select id="p2"><option value="">Choose...</option><option>Word processor</option><option>Operating system</option><option>Printer driver</option><option>Printer</option></select></label>
+<label>Step 3<select id="p3"><option value="">Choose...</option><option>Word processor</option><option>Operating system</option><option>Printer driver</option><option>Printer</option></select></label>
+<label>Step 4<select id="p4"><option value="">Choose...</option><option>Word processor</option><option>Operating system</option><option>Printer driver</option><option>Printer</option></select></label>
+<button id="check3">Test the print job</button><div id="f3" class="feedback"></div></section>
+<div class="callout"><strong>Finish Line</strong><div id="total" style="font-size:20px;margin-top:8px">Total score: 0/13</div><p>Try for a perfect score before moving on.</p></div>
+</main>
+<script>
+const scores={a:0,b:0,c:0};function update(){s1.textContent=scores.a+'/4';s2.textContent=scores.b+'/5';s3.textContent=scores.c+'/4';total.textContent='Total score: '+(scores.a+scores.b+scores.c)+'/13'}
+check1.addEventListener('click',()=>{const ans=['ENIAC','Von Neumann Architecture','Transistor','Qbits'];let n=0;ans.forEach((a,i)=>{if(document.getElementById('t'+(i+1)).value===a)n++});scores.a=n;f1.textContent=n===4?'Excellent — the computer evolution challenge is complete.':n+' of 4 correct. Review the major developments in computer history.';update()});
+check2.addEventListener('click',()=>{const ans=['CPU','RAM','ROM','Motherboard','SSD'];let n=0;ans.forEach((a,i)=>{if(document.getElementById('h'+(i+1)).value===a)n++});scores.b=n;f2.textContent=n===5?'Great job — all hardware components are correct.':n+' of 5 correct. Think about processing, memory, the motherboard, and storage.';update()});
+check3.addEventListener('click',()=>{const ans=['Word processor','Operating system','Printer driver','Printer'];let n=0;ans.forEach((a,i)=>{if(document.getElementById('p'+(i+1)).value===a)n++});scores.c=n;f3.textContent=n===4?'Print successful! You connected application → operating system → driver → hardware.':n+' of 4 steps correct. Follow the path from the application to the physical printer.';update()});update();
+</script></body></html>
