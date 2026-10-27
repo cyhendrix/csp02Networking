@@ -10,6 +10,7 @@ body{font-family:Arial,sans-serif;background:#f8f7fb;color:#23232a;margin:0}main
 [hidden]{display:none!important} .nav{margin:14px 0 18px}\n.print-bank{display:flex;flex-wrap:wrap;gap:10px;padding:16px;background:#f4f0fb;border-radius:12px;min-height:75px;margin:16px 0}.print-tile{padding:12px 16px;background:#452669;color:white;border:2px solid #f2b526;border-radius:10px;font-weight:700;cursor:grab;touch-action:manipulation}.print-tile.selected{outline:4px solid #e2a400}.print-slots{display:grid;gap:12px}.print-step{display:flex;align-items:center;gap:12px}.print-step strong{min-width:75px}.print-drop{flex:1;min-height:60px;border:2px dashed #a18ab6;background:#fff;border-radius:10px;padding:7px;display:flex;align-items:center}.print-drop.over{background:#fff7dd;border-color:#e2a400}.print-drop.field-correct{background:#eaf6e6;border-color:#3f8f45}.print-drop.field-wrong{background:#fff0f0;border-color:#b64b4b}
 .bottom-nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:24px;padding-top:16px;border-top:1px solid #e7e1ef}.bottom-nav button{background:#452669;color:#fff;border:2px solid #f2b526;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer}.bottom-nav button[data-goto="2"]:last-child,.bottom-nav button[data-goto="3"]:last-child,.bottom-nav button[data-goto="4"]:last-child{margin-left:auto}\n
 .read-aloud{display:inline-flex;align-items:center;gap:6px;margin:8px 0 4px;padding:7px 11px;background:#fff7dd;color:#452669;border:2px solid #e4bb3b;border-radius:9px;font-size:14px;font-weight:700}.read-aloud:hover{background:#f9e9ad}.speech-tools{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0}.speech-tools button{margin:0}.speech-status{font-size:14px;color:#4e4654}
+.read-row{display:flex;align-items:flex-start;gap:9px;margin-top:14px}.read-row label,.read-row p{flex:1;min-width:0;margin:0}.read-aloud.speaker-small{flex:0 0 34px;width:34px;height:34px;padding:0;margin:0;justify-content:center;font-size:16px;line-height:1;border-radius:8px}.read-row label select{margin-top:7px}
 </style>
 </head><body><main>
 <header><p style="color:#f2b526;font-weight:800;letter-spacing:1px">COMPUTER SCIENCE FOUNDATIONS</p><h1>Chapter 02: Networking</h1><p>Interactive Practice Lab • Three Challenges</p></header>
@@ -48,7 +49,7 @@ let speechActiveButton=null;
 function stopSpeech(){if(speechAvailable)window.speechSynthesis.cancel();if(speechActiveButton){speechActiveButton.setAttribute("aria-pressed","false");speechActiveButton=null}const status=el("speechStatus");if(status)status.textContent="Reading stopped."}
 function readText(button,target){
   if(!speechAvailable){el("speechStatus").textContent="Read aloud is unavailable in this browser.";return}
-  const text=target.innerText.replace(/\\s+/g," ").trim();
+  const select=target.querySelector("select");const text=(target.textContent.split(select?.textContent||"")[0]+" "+(select?"Answer choices: "+Array.from(select.options).filter(o=>o.value).map(o=>o.textContent).join(", "):"")).replace(/\\s+/g," ").trim();
   window.speechSynthesis.cancel();
   if(!text)return;
   const utterance=new SpeechSynthesisUtterance(text);utterance.rate=0.9;utterance.lang="en-US";
@@ -72,8 +73,10 @@ function addReadAloud(){
   });
   function makeSpeaker(target,title){
     const button=document.createElement("button");button.type="button";button.className="read-aloud";
-    button.textContent="🔊 "+title;button.setAttribute("aria-label",title+": "+target.innerText.trim());button.setAttribute("aria-pressed","false");
-    target.insertAdjacentElement("afterend",button);
+    button.textContent="🔊";button.title=title+" and answer choices";button.setAttribute("aria-label",title+" and answer choices");button.setAttribute("aria-pressed","false");
+    button.classList.add("speaker-small");
+    const row=document.createElement("div");row.className="read-row";
+    target.parentNode.insertBefore(row,target);row.appendChild(button);row.appendChild(target);
     button.addEventListener("click",()=>readText(button,target));
   }
   if(!speechAvailable)el("speechStatus").textContent="Read aloud is not supported in this browser.";
