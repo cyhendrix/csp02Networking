@@ -8,7 +8,9 @@ body{font-family:Arial,sans-serif;background:#f8f7fb;color:#23232a;margin:0}main
 
 *{box-sizing:border-box}body{background:#f7f6fb;color:#20242b}header{background:linear-gradient(135deg,#452669,#0b2b5b);border-radius:0;padding:28px 5vw}main{max-width:1050px;padding:0 20px 60px}h2{color:#0b2b5b}section{box-shadow:0 4px 15px #2221;border-radius:18px;padding:24px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin:20px 0}.nav button{margin:0;background:#fff;color:#452669;border:2px solid #ddd9e5;font-weight:bold}.nav button.active{background:#452669;color:#fff;border-color:#452669}.intro{border:2px solid #f2b526;background:#fffaf0}.intro h2{background:#452669;color:#fff;margin:-24px -24px 20px;padding:15px 24px}.student-fields{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.student-fields input,.student-fields select{width:100%;padding:12px;border:2px solid #a89abc;border-radius:9px;font:inherit}.student-fields label{margin:0}.primary{border:2px solid #f2b526}button:disabled{opacity:.5;cursor:not-allowed}.feedback.good{color:#166d38}.feedback.bad{color:#a5243a}.progress{background:#fff7dd;border-left:6px solid #f2b526;padding:12px 16px;border-radius:10px;margin:16px 0}.field-correct{background:#eaf6e6;border-color:#3f8f45!important}.field-wrong{background:#fff0f0;border-color:#b64b4b!important}#results{border:2px solid #f2b526}#resultBreakdown{line-height:1.8}@media(max-width:650px){.student-fields{grid-template-columns:1fr}}
 [hidden]{display:none!important} .nav{margin:14px 0 18px}\n.print-bank{display:flex;flex-wrap:wrap;gap:10px;padding:16px;background:#f4f0fb;border-radius:12px;min-height:75px;margin:16px 0}.print-tile{padding:12px 16px;background:#452669;color:white;border:2px solid #f2b526;border-radius:10px;font-weight:700;cursor:grab;touch-action:manipulation}.print-tile.selected{outline:4px solid #e2a400}.print-slots{display:grid;gap:12px}.print-step{display:flex;align-items:center;gap:12px}.print-step strong{min-width:75px}.print-drop{flex:1;min-height:60px;border:2px dashed #a18ab6;background:#fff;border-radius:10px;padding:7px;display:flex;align-items:center}.print-drop.over{background:#fff7dd;border-color:#e2a400}.print-drop.field-correct{background:#eaf6e6;border-color:#3f8f45}.print-drop.field-wrong{background:#fff0f0;border-color:#b64b4b}
-.bottom-nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:24px;padding-top:16px;border-top:1px solid #e7e1ef}.bottom-nav button{background:#452669;color:#fff;border:2px solid #f2b526;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer}.bottom-nav button[data-goto="2"]:last-child,.bottom-nav button[data-goto="3"]:last-child,.bottom-nav button[data-goto="4"]:last-child{margin-left:auto}\n</style>
+.bottom-nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:24px;padding-top:16px;border-top:1px solid #e7e1ef}.bottom-nav button{background:#452669;color:#fff;border:2px solid #f2b526;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer}.bottom-nav button[data-goto="2"]:last-child,.bottom-nav button[data-goto="3"]:last-child,.bottom-nav button[data-goto="4"]:last-child{margin-left:auto}\n
+.read-aloud{display:inline-flex;align-items:center;gap:6px;margin:8px 0 4px;padding:7px 11px;background:#fff7dd;color:#452669;border:2px solid #e4bb3b;border-radius:9px;font-size:14px;font-weight:700}.read-aloud:hover{background:#f9e9ad}.speech-tools{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0}.speech-tools button{margin:0}.speech-status{font-size:14px;color:#4e4654}
+</style>
 </head><body><main>
 <header><p style="color:#f2b526;font-weight:800;letter-spacing:1px">COMPUTER SCIENCE FOUNDATIONS</p><h1>Chapter 02: Networking</h1><p>Interactive Practice Lab • Three Challenges</p></header>
 <section class="intro" id="studentScreen"><h2>Student Information</h2><p>Enter your information to begin. Your work saves automatically on this device.</p><div class="student-fields"><label>First Name<input id="firstName" autocomplete="given-name"></label><label>Last Name<input id="lastName" autocomplete="family-name"></label><label>Class Period<select id="classPeriod"><option value="">Choose block...</option><option>1st Block</option><option>2nd Block</option><option>3rd Block</option><option>4th Block</option></select></label></div><button class="primary" id="begin">Begin Practice</button><p id="studentError" class="feedback bad"></p></section>
@@ -37,5 +39,46 @@ document.querySelectorAll("[data-page],[data-goto]").forEach(b=>b.addEventListen
 [1,2,3].forEach(i=>{el("check"+i).addEventListener("click",()=>check(i));if(state.checks[i]>0){el("f"+i).textContent=state.best[i]+" correct; "+state.checks[i]+" of 2 checks used.";if(state.checks[i]>=2||state.best[i]===ids[i].length){el("check"+i).disabled=true;ids[i].forEach(id=>el(id).disabled=true)}}});
 el("submitGrade").addEventListener("click",async()=>{if(![1,2,3].every(i=>state.checks[i]>0))return;el("submitGrade").disabled=true;el("submitMessage").textContent="Sending submission request…";let payload={name:state.last+", "+state.first,period:state.period,chapter:"Chapter 02 | Networking",score:Math.round(score()/11*100)};try{await fetch(ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});state.submitted=true;save();el("submitMessage").textContent="Submission request sent. Verify the grade in your spreadsheet; sending does not confirm acceptance."}catch(e){el("submitMessage").textContent="Submission failed. Please try again."}el("submitGrade").disabled=false});
 el("resetLab").addEventListener("click",()=>{if(confirm("Reset all Chapter 2 progress on this device?")){localStorage.removeItem(KEY);location.reload()}});
+const originalShow=show;
+show=function(page){stopSpeech();originalShow(page);el("speechTools").hidden=!state.started};
+
+// Optional read-aloud accessibility tools. Audio starts only after a student's click.
+const speechAvailable="speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+let speechActiveButton=null;
+function stopSpeech(){if(speechAvailable)window.speechSynthesis.cancel();if(speechActiveButton){speechActiveButton.setAttribute("aria-pressed","false");speechActiveButton=null}const status=el("speechStatus");if(status)status.textContent="Reading stopped."}
+function readText(button,target){
+  if(!speechAvailable){el("speechStatus").textContent="Read aloud is unavailable in this browser.";return}
+  const text=target.innerText.replace(/\\s+/g," ").trim();
+  window.speechSynthesis.cancel();
+  if(!text)return;
+  const utterance=new SpeechSynthesisUtterance(text);utterance.rate=0.9;utterance.lang="en-US";
+  if(speechActiveButton)speechActiveButton.setAttribute("aria-pressed","false");
+  speechActiveButton=button;button.setAttribute("aria-pressed","true");
+  el("speechStatus").textContent="Reading aloud…";
+  utterance.onend=utterance.onerror=()=>{if(speechActiveButton===button){button.setAttribute("aria-pressed","false");speechActiveButton=null;el("speechStatus").textContent="Ready to read aloud."}};
+  window.speechSynthesis.speak(utterance);
+}
+function addReadAloud(){
+  const nav=el("nav");
+  const tools=document.createElement("div");tools.className="speech-tools";tools.hidden=true;tools.id="speechTools";
+  tools.innerHTML='<button type="button" id="stopReading" class="read-aloud">■ Stop Reading</button><span class="speech-status" id="speechStatus" aria-live="polite">Select a speaker to hear instructions or questions.</span>';
+  nav.insertAdjacentElement("afterend",tools);
+  el("stopReading").addEventListener("click",stopSpeech);
+  const targets=[...document.querySelectorAll("#challenge1,#challenge2,#challenge3")];
+  targets.forEach(section=>{
+    const heading=section.querySelector("h2"),instruction=heading?.nextElementSibling;
+    if(instruction?.tagName==="P")makeSpeaker(instruction,"Read instructions");
+    section.querySelectorAll("label").forEach(label=>makeSpeaker(label,"Read question"));
+  });
+  function makeSpeaker(target,title){
+    const button=document.createElement("button");button.type="button";button.className="read-aloud";
+    button.textContent="🔊 "+title;button.setAttribute("aria-label",title+": "+target.innerText.trim());button.setAttribute("aria-pressed","false");
+    target.insertAdjacentElement("afterend",button);
+    button.addEventListener("click",()=>readText(button,target));
+  }
+  if(!speechAvailable)el("speechStatus").textContent="Read aloud is not supported in this browser.";
+}
+addReadAloud();
+
 show(state.started?state.page:1);
 </script></body></html>
